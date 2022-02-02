@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
 
-        child: Container(decoration:BoxDecoration(color: Colors.green,borderRadius:BorderRadius.all(Radius.circular(10))),height:100,width: 300,child: Center(child:Text("Charta",style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold,fontSize: 90),)),)
+        child: Container(decoration:BoxDecoration(color: Colors.green,borderRadius:BorderRadius.all(Radius.circular(10))),height:100,width: 300,child: Center(child:Text("Charta",style: TextStyle(color: Colors.white,fontWeight:FontWeight.bold,fontSize: 85),)),)
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
