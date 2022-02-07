@@ -1,5 +1,5 @@
-import 'package:charta_qr/screens/createqr.dart';
-import 'package:charta_qr/screens/scanqr.dart';
+import 'package:charta/qrscreens/createqr.dart';
+import 'package:charta/qrscreens/scanqr.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) {
