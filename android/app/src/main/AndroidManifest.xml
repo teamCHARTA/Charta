@@ -33,6 +33,6 @@
             android:value="2" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAQFQU-CoGGuLbtGd-ZVlPyodkR8cRrFz8"/>
+            android:value="evide paste cheyada api"/>
     </application>
 </manifest>
