@@ -17,6 +17,40 @@ class User{
     role:json['role']
   );
 }
+
+// Product data map
+class Product{
+  String productid;
+  String uploaderid;
+  int quality;
+  int size;
+  String uploadeddateandtime;
+
+
+  Product({
+    this.productid="",
+    this.uploaderid="",
+    this.quality=0,
+    this.size=0,
+    this.uploadeddateandtime="",
+
+
+  });
+  Map<String,dynamic> toJson()=>{
+    'productid':productid,
+    'uploaderid':uploaderid,
+    'quality':quality,
+    'size':size,
+    'uploadeddateandtime':uploadeddateandtime,
+
+  };
+
+  static User fromJson(Map<String,dynamic>json)=>User(
+      // productid:json['productid']
+  );
+}
+
+
 class Database{
 
   Future<void> Userdatawrite(String uid,String role )async {
@@ -41,10 +75,24 @@ class Database{
     return Userrolecheck;
   }
 
-  String UserRole(uid){
+  Future<String> UserRole() async {
+    String uid=  await FirebaseAuth.instance.currentUser!.uid;
     ReadUserdata(uid);
     return Userroll;
   }
+  Future WritePaperData(quality,size,uid)async{
+    await FirebaseFirestore.instance.collection("paperdata").doc().set({
+      "productid": DateTime.now().millisecondsSinceEpoch.toString(),
+      "user":uid,
+      "quality":quality,
+      "size":size,
+      "time":DateTime.now().toString(),
+
+    }).then((value) => print("Added"));
+    
+  }
+
+
 
 
 

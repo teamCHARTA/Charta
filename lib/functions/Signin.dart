@@ -51,7 +51,8 @@ Future logout()async{
   return newuser;
 }
 
-void Newrollupdate(int x) {
+void Newrollupdate(int x) async{
+
   if(x==1){rollcheck=false;}else{rollcheck=true;}
 }
 bool Newrollcheck(){

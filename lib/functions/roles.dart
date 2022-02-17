@@ -12,7 +12,8 @@ Roles(BuildContext context){
   }
 
 }
-
+final uid =  FirebaseAuth.instance.currentUser?.uid;
+String role="user";
 class Roleselectpage extends StatefulWidget {
   const Roleselectpage({Key? key}) : super(key: key);
 
@@ -22,7 +23,7 @@ class Roleselectpage extends StatefulWidget {
 
 class _RoleselectpageState extends State<Roleselectpage> {
   @override
-   String role="user";
+
   Widget build(BuildContext context) {
 
     return Scaffold(
@@ -37,6 +38,8 @@ class _RoleselectpageState extends State<Roleselectpage> {
                 setState(() {
                   role =value.toString();
                 });
+                if(uid!=null)
+                {Database().Userdatawrite(uid!, role);}
               },
             ),
             const SizedBox(height: 10),
@@ -52,6 +55,8 @@ class _RoleselectpageState extends State<Roleselectpage> {
                 setState(() {
                   role =value.toString();
                 });
+                if(uid!=null)
+                {Database().Userdatawrite(uid!, role);}
               },
             ),
             const SizedBox(height: 10),
@@ -67,6 +72,9 @@ class _RoleselectpageState extends State<Roleselectpage> {
                 setState(() {
                   role =value.toString();
                 });
+
+              if(uid!=null)
+              {Database().Userdatawrite(uid!, role);}
               },
             ),
             const SizedBox(height: 10),
@@ -75,8 +83,9 @@ class _RoleselectpageState extends State<Roleselectpage> {
         ),const SizedBox(height: 20),
         TextButton(onPressed: (){
           Newrollupdate(1);
-          final uid =  FirebaseAuth.instance.currentUser?.uid;
-          if(uid!=null){Database().Userdatawrite(uid, role);
+          if( uid !=null)
+          {Database().Userdatawrite(uid!, role);
+
           Navigator.push(context, MaterialPageRoute(builder: (context)=>const Home()));
           }
 
