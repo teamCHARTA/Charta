@@ -1,3 +1,4 @@
+import 'package:charta/screens/adminpage.dart';
 import 'package:charta/screens/scraperpage.dart';
 import 'package:charta/screens/sellerpage.dart';
 import 'package:charta/screens/userpage.dart';
@@ -22,7 +23,10 @@ class _WelcomepageState extends State<Welcomepage> {
   String uid=  FirebaseAuth.instance.currentUser!.uid;
   final user = FirebaseAuth.instance.currentUser!;
 
-  late String rolestatus = Database().UserRole(uid);
+
+  String rolestatus = Database().UserRole() as String;
+
+
   Widget build(BuildContext context) {
 
     if(rolestatus=="user"){
@@ -33,6 +37,8 @@ class _WelcomepageState extends State<Welcomepage> {
     }
     else if(rolestatus=="scraper"){
       return Scrapperpage();
+    }else if(rolestatus=="admin"){
+      return Adminpage();
     }else{
       return Scaffold(
         body: Center(child: Column(
