@@ -16,8 +16,7 @@ class LoggedinPage extends StatefulWidget {
 class _LoggedinPageState extends State<LoggedinPage> {
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-    final uid=user.uid;
+
 
 
 

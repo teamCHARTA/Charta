@@ -39,7 +39,7 @@ class _RoleselectpageState extends State<Roleselectpage> {
                   role =value.toString();
                 });
                 if(uid!=null)
-                {Database().Userdatawrite(uid!, role);}
+                {Database().Userdatawrite(role);}
               },
             ),
             const SizedBox(height: 10),
@@ -56,7 +56,7 @@ class _RoleselectpageState extends State<Roleselectpage> {
                   role =value.toString();
                 });
                 if(uid!=null)
-                {Database().Userdatawrite(uid!, role);}
+                {Database().Userdatawrite(role);}
               },
             ),
             const SizedBox(height: 10),
@@ -74,7 +74,7 @@ class _RoleselectpageState extends State<Roleselectpage> {
                 });
 
               if(uid!=null)
-              {Database().Userdatawrite(uid!, role);}
+              {Database().Userdatawrite(role);}
               },
             ),
             const SizedBox(height: 10),
@@ -84,7 +84,7 @@ class _RoleselectpageState extends State<Roleselectpage> {
         TextButton(onPressed: (){
           Newrollupdate(1);
           if( uid !=null)
-          {Database().Userdatawrite(uid!, role);
+          {Database().Userdatawrite(role);
 
           Navigator.push(context, MaterialPageRoute(builder: (context)=>const Home()));
           }
@@ -94,24 +94,3 @@ class _RoleselectpageState extends State<Roleselectpage> {
     );
   }
 }
-// Column(
-// children: <Widget>[
-// for (int i = 1; i <= 5; i++)
-// ListTile(
-// title: Text(
-// 'Radio $i',
-// style: Theme.of(context).textTheme.subtitle1.copyWith(color: i == 5 ? Colors.black38 : Colors.black),
-// ),
-// leading: Radio(
-// value: i,
-// groupValue: _value,
-// activeColor: Color(0xFF6200EE),
-// onChanged: i == 5 ? null : (int value) {
-// setState(() {
-// _value = value;
-// });
-// },
-// ),
-// ),
-// ],
-// )

@@ -24,41 +24,84 @@ class _WelcomepageState extends State<Welcomepage> {
   final user = FirebaseAuth.instance.currentUser!;
 
 
-  String rolestatus = Database().UserRole() as String;
+  final rolestatus = Database().UserRole();
+
+
 
 
   Widget build(BuildContext context) {
 
-    if(rolestatus=="user"){
-      return Userpage();
-    }
-    else if(rolestatus=="seller"){
-      return Sellerpage();
-    }
-    else if(rolestatus=="scraper"){
-      return Scrapperpage();
-    }else if(rolestatus=="admin"){
-      return Adminpage();
-    }else{
+    // if(rolestatus=="user"){
+    //   return Userpage();
+    // }
+    // else if(rolestatus=="seller"){
+    //   return Sellerpage();
+    // }
+    // else if(rolestatus=="scraper"){
+    //   return Scrapperpage();
+    // }else if(rolestatus=="admin"){
+    //   return Adminpage();
+    // }else{
       return Scaffold(
-        body: Center(child: Column(
-            children:[ SizedBox(height: 20),CircleAvatar(
-              radius: 50,
-              backgroundImage:NetworkImage(user.photoURL!) ,
-            ),SizedBox(height: 8),
-              Text(user.displayName!,style: TextStyle(color: Colors.lightGreen,fontSize: 16),),
-              SizedBox(height: 8),
-              Text(user.email!,style: TextStyle(color: Colors.lightGreen,fontSize: 16),),
-              Text("no user data fount"),
-              SizedBox(height: 20),
-              TextButton(onPressed: (){
-                final provider = Provider.of<GoogleSigninProvider>(context,listen: false);
-                provider.logout();
-              }, child: Text("Logout"))
-            ]
-        ),),
+        body:StreamBuilder(
+          stream: FirebaseFirestore.instance.collection("user").doc(uid).snapshots(),
+          builder:(context,AsyncSnapshot<DocumentSnapshot>snapshot){
+            if(snapshot.connectionState==ConnectionState.waiting)
+            { return const Center(child: CircularProgressIndicator());
+            }
+            else if(snapshot.hasData){
 
-      );;
-    }
+
+              return switchrollpage(snapshot);
+            }
+            else{
+              return const Center(child: Text("Something went wrong"));
+            }
+          },
+
+
+        ),
+        // body: Center(child: Column(
+        //     children:[ SizedBox(height: 20),CircleAvatar(
+        //       radius: 50,
+        //       backgroundImage:NetworkImage(user.photoURL!) ,
+        //     ),SizedBox(height: 8),
+        //       Text(user.displayName!,style: TextStyle(color: Colors.lightGreen,fontSize: 16),),
+        //       SizedBox(height: 8),
+        //       Text(user.email!,style: TextStyle(color: Colors.lightGreen,fontSize: 16),),
+        //       Text("no user data fount"),
+        //       SizedBox(height: 20),
+        //       TextButton(onPressed: (){
+        //         final provider = Provider.of<GoogleSigninProvider>(context,listen: false);
+        //         provider.logout();
+        //       }, child: Text("Logout"))
+        //     ]
+        // ),),
+
+      );
+
+  }
+
+  switchrollpage(AsyncSnapshot<DocumentSnapshot> snapshot) {
+if(snapshot.data!['role']=='admin'){
+  return Adminpage();
+}
+else if(snapshot.data!['role']=='seller'){
+  return Sellerpage();
+}
+else if(snapshot.data!['role']=='scraper'){
+  return Scrapperpage();
+}
+else if(snapshot.data!['role']=='user'){
+  return Userpage();
+}
+else{
+  return Userpage();
+}
+
+
+
   }
 }
+
+
