@@ -3,7 +3,8 @@ import 'package:charta/qrscreens/createqr.dart';
 import 'package:charta/qrscreens/scanqr.dart';
 import 'package:charta/screens/signin.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
+import 'image_resizer.dart';
 class logtosignin extends StatefulWidget {
   const logtosignin({Key? key}) : super(key: key);
 
@@ -47,7 +48,10 @@ class _logtosigninState extends State<logtosignin> {
 
                 },
                     child: const Text('map')),
-
+                TextButton(
+                  onPressed: (){Navigator.push(context,  MaterialPageRoute(builder: (context)=>const ImageResizer()));},
+                  child:const  Text("imageresize"),),
+                const SizedBox(height: 10,),
               ]),
         ],),
     );

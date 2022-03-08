@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:fast_image_resizer/fast_image_resizer.dart';
@@ -28,7 +30,8 @@ class ImageResizer extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
+                    return
+                    AlertDialog(
                       title: Text("Image"),
                       content: testing,
                     );
