@@ -14,7 +14,12 @@ class Scrapperpage extends StatefulWidget {
 class _ScrapperpageState extends State<Scrapperpage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:Column(
+    return Scaffold(
+      appBar: AppBar(title: const Text("Home"),actions: [TextButton(onPressed: (){
+        final provider = Provider.of<GoogleSigninProvider>(context,listen: false);
+        provider.logout();
+      }, child:Text("Logout",style: TextStyle(color: Colors.white),),),],),
+      body:Column(
       children: [
         Center(child: Text("Scaperpage"),),
         TextButton(onPressed: (){

@@ -1,7 +1,7 @@
-import 'package:charta/screens/adminpage.dart';
-import 'package:charta/screens/scraperpage.dart';
-import 'package:charta/screens/sellerpage.dart';
-import 'package:charta/screens/userpage.dart';
+import 'package:charta/screens/Rollspage/adminpage.dart';
+import 'package:charta/screens/Rollspage/scraperpage.dart';
+import 'package:charta/screens/Rollspage/sellerpage.dart';
+import 'package:charta/screens/Rollspage/userpage.dart';
 import 'package:flutter/material.dart';
 import 'package:charta/functions/database.dart';
 import 'package:charta/functions/Signin.dart';

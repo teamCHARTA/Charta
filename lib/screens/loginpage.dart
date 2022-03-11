@@ -16,6 +16,7 @@ class _logtosigninState extends State<logtosignin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Home")),
       body:  Row(
         children: [
           Column(

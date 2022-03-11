@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1050405404631-vq2ee9v8lkh5iboth4drhrs2n89ust72.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teamchata.charta",
+            "certificate_hash": "cd3aacda715c06656a06df37faf8ea9ed0857628"
+          }
+        },
+        {
           "client_id": "1050405404631-l9k4smpfc413q09k3b4a02iqtvah9ri1.apps.googleusercontent.com",
           "client_type": 3
         }
