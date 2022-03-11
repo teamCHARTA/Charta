@@ -12,7 +12,12 @@ final user = FirebaseAuth.instance.currentUser!;
 class _AdminpageState extends State<Adminpage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:Column(
+    return Scaffold(
+      appBar: AppBar(title: const Text("Home"),actions: [TextButton(onPressed: (){
+        final provider = Provider.of<GoogleSigninProvider>(context,listen: false);
+        provider.logout();
+      }, child:Text("Logout",style: TextStyle(color: Colors.white),),),],),
+      body:Column(
       children: [
         Center(child: Column(
             children:[ SizedBox(height: 20),CircleAvatar(

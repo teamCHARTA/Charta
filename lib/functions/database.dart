@@ -1,11 +1,16 @@
 import 'dart:io';
+
 import 'dart:typed_data';
 
 import 'package:charta/functions/Signin.dart';
+import 'package:charta/functions/roles.dart';
+import 'package:charta/screens/Crudscreens/Addproduct.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../main.dart';
 bool Userrolecheck =false;
 String Userroll="user";
 List buyedproducts=[];
@@ -97,12 +102,14 @@ class Appdata{
   int totalpaper;
   int totalscrappaper;
   int totaluser;
+  int totalseller;
 
   Appdata({
 
     this.totalpaper=0,
     this.totalscrappaper=0,
     this.totaluser=0,
+    this.totalseller=0,
 
 
   });
@@ -111,6 +118,7 @@ class Appdata{
     'totalpaper':totalpaper,
     'totalscrappaper':totalscrappaper,
     'totaluser':totaluser,
+    'totalseller':totalseller,
 
   };
 
@@ -118,15 +126,21 @@ class Appdata{
       totalpaper:json['totalpaper'],
       totalscrappaper:json['totalscrappaper'],
       totaluser:json['totaluser'],
+      totalseller:json['totalseller'],
 
   );
 }
 class Database{
 
-  Future<void> Userdatawrite(String role )async {
+  Future<void> Userdatawrite(String role)async {
     var uid=FirebaseAuth.instance.currentUser?.uid;
     return await FirebaseFirestore.instance.collection("user").doc(uid).set({
       "role":role,
+      "buyedproducts":buyedproducts,
+      "selledproduct":selledproduct,
+      "scrapindproduct":scrapindproduct,
+      "user":uid,
+     // 'location':loc,
     }).then((value) => Newrollupdate(1));
   }
 
@@ -169,11 +183,25 @@ class Database{
       "usedpersent":usedpersent,
       "uploadeddateandtime":DateTime.now(),
 
-    }).then((value) => print("Added"));
+    }).then((value) => Snakebar(NavigationService.navigatorKey.currentContext,"added"));
     
   }
-  Future WriteuserData(quality,size,uid)async{
-    await FirebaseFirestore.instance.collection("user").doc(uid).set({
+  // Future WriteuserData(quality,size,uid)async{
+  //   await FirebaseFirestore.instance.collection("user").doc(uid).set({
+  //     "buyedproducts":buyedproducts,
+  //     "selledproduct":selledproduct,
+  //     "scrapindproduct":scrapindproduct,
+  //     "user":uid,
+  //     'role':role,
+  //     'user':userid,
+  //     'location':loc,
+  //
+  //
+  //   }).then((value) => print("Added"));
+  //
+  // }
+  Future UpdateuserData(quality,size,uid)async{
+    await FirebaseFirestore.instance.collection("user").doc(uid).update({
       "buyedproducts":buyedproducts,
       "selledproduct":selledproduct,
       "scrapindproduct":scrapindproduct,
@@ -182,7 +210,7 @@ class Database{
       "size":size,
       "time":DateTime.now().toString(),
 
-    }).then((value) => print("Added"));
+    }).then((value) => Snakebar(NavigationService.navigatorKey.currentContext,"added"));
 
   }
   static UploadTask? uploadFile(String destination, File file) {
@@ -204,7 +232,48 @@ class Database{
     }
   }
 
+  Stream <List<Product>> ReadSellerpaper() {
 
+      var uid = FirebaseAuth.instance.currentUser?.uid;
+      String? uuid=uid;
+      print(uuid);
+    return FirebaseFirestore.instance.collection('paperdata').where("uploaderid",isEqualTo:uuid).orderBy("uploadeddateandtime",descending: true).
+        snapshots()
+        .map((snapshots) =>snapshots.docs.map((doc) =>Product.fromJson(doc.data())).toList());
+  }
+    // FirebaseFirestore.instance.collection('paperdata').where("uploderid",isEqualTo:uid)
+    //     .snapshots()
+    //     .map((snapshots) =>snapshots.docs.map((doc) =>Product.fromJson(doc.data())).toList());
+  Stream <List<Product>> ReadUserpaper() {
+    return FirebaseFirestore.instance.collection('paperdata').where("usedpersent",isNotEqualTo: 100).orderBy("usedpersent",descending: true).orderBy("uploadeddateandtime",descending: true).
+    snapshots()
+        .map((snapshots) =>snapshots.docs.map((doc) =>Product.fromJson(doc.data())).toList());
+  }
+  Stream <List<Product>> ReadAppdata()=>
+      FirebaseFirestore.instance.collection('paperdata')
+          .snapshots()
+          .map((snapshots) =>snapshots.docs.map((doc) =>Product.fromJson(doc.data())).toList());
 
+  String timeAgo(DateTime d) {
+    Duration diff = DateTime.now().difference(d);
+    if (diff.inDays > 365)
+      return "${(diff.inDays / 365).floor()} ${(diff.inDays / 365).floor() == 1 ? "year" : "years"} ago";
+    if (diff.inDays > 30)
+      return "${(diff.inDays / 30).floor()} ${(diff.inDays / 30).floor() == 1 ? "month" : "months"} ago";
+    if (diff.inDays > 7)
+      return "${(diff.inDays / 7).floor()} ${(diff.inDays / 7).floor() == 1 ? "week" : "weeks"} ago";
+    if (diff.inDays > 0)
+      return "${diff.inDays} ${diff.inDays == 1 ? "day" : "days"} ago";
+    if (diff.inHours > 0)
+      return "${diff.inHours} ${diff.inHours == 1 ? "hour" : "hours"} ago";
+    if (diff.inMinutes > 0)
+      return "${diff.inMinutes} ${diff.inMinutes == 1 ? "minute" : "minutes"} ago";
+    return "just now";
+  }
 
+  void Snakebar(BuildContext? context,String message){
+    final snackbar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context!)
+        .showSnackBar(snackbar);
+  }
 }
