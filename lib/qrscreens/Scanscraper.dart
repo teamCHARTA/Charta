@@ -1,22 +1,18 @@
-
-
-import 'package:charta/functions/database.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-class ScanScreen extends StatefulWidget {
+import '../functions/database.dart';
+class ScanScraper extends StatefulWidget {
   String? qrstring;
-  ScanScreen({ Key? key,this.qrstring}) : super(key: key);
+   ScanScraper({this.qrstring});
 
   @override
-  _ScanScreenState createState() => _ScanScreenState();
+  _ScanScraperState createState() => _ScanScraperState();
 }
-
-class _ScanScreenState extends State<ScanScreen> {
-  var qRstring ='Not Scanned';
-
+var qRstring ='Not Scanned';
+class _ScanScraperState extends State<ScanScraper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,12 +32,16 @@ class _ScanScreenState extends State<ScanScreen> {
             ElevatedButton(onPressed:(){scanQR();
 
             } , child: Text('Scan QR Code')),
-            ElevatedButton(onPressed: (){Database().Scanreadpaper(qRstring, context);}, child: Text('Redirect'))
+            ElevatedButton(onPressed: (){Database().ScanScraperpaper(qRstring, context);}, child: Text('Redirect'))
           ],
         ),
       ),
     );
   }
+
+
+
+
   Future<void> scanQR() async{
     try {
       FlutterBarcodeScanner.scanBarcode(

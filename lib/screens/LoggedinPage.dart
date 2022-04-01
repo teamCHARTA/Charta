@@ -1,7 +1,7 @@
 import 'package:charta/functions/Signin.dart';
 import 'package:charta/screens/Welcomepage.dart';
 import 'package:charta/functions/database.dart';
-import 'package:charta/functions/roles.dart';
+import 'package:charta/screens/Rollspage/roles.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -16,11 +16,6 @@ class LoggedinPage extends StatefulWidget {
 class _LoggedinPageState extends State<LoggedinPage> {
   @override
   Widget build(BuildContext context) {
-
-
-
-
-
     if (Newusercheck()==true && Newrollcheck()==true){
       return const Roleselectpage();
     }else{

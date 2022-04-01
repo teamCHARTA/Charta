@@ -27,6 +27,8 @@ class _RoleselectpageState extends State<Roleselectpage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: AppBar(title: Text("Select a Roll"),),
+      resizeToAvoidBottomInset:false,
       body: Column(
         children: [Row(
           children: [
