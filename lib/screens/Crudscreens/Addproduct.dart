@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:charta/gmapservices/locationservices.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -6,28 +9,40 @@ import 'package:charta/functions/database.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../gmapservices/locationSelectMap.dart';
+
 class Addproductpage extends StatefulWidget {
   const Addproductpage({Key? key}) : super(key: key);
+
+
 
   @override
   _AddproductpageState createState() => _AddproductpageState();
 }
 
 class _AddproductpageState extends State<Addproductpage> {
+  final data =Loc(lat: 0.00, lon: 0.00);
   var formkey = GlobalKey<FormState>();
   var quantity = 0;
   var usedpersent = 0;
+  String lat='';
+  String lan='';
   String image1url = "";
   String image2url = "";
   UploadTask? task1;
   UploadTask? task2;
   File? file1;
   File? file2;
+  var location =Loc(lat: 0.000,lon: 0.000) as Loc;
+
+
 
   @override
   Widget build(BuildContext context) {
+
     final fileName1 = file1 != null ? basename(file1!.path) : " ";
     final fileName2 = file2 != null ? basename(file2!.path) : " ";
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Addpaper"),
@@ -109,6 +124,32 @@ class _AddproductpageState extends State<Addproductpage> {
                     }
                   },
                 ),
+                SizedBox(height: 5,),
+          Row(
+            children: [
+              TextButton(onPressed:()async{
+                final location = await Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context)=> LocMapSel()//calling with uniqueCode
+                            )) as Loc;
+                setState(() {
+                  data.lon=location.lon;
+                  data.lat=location.lat;
+                });
+
+
+              }, child: Text("Select location from Map")),
+              SizedBox(width: 10,),
+              TextButton(onPressed:()async{
+                    final Position position = await Getlocation().getGeoLocationPosition();
+                    setState(() {
+                      data.lon=position.longitude;
+                      data.lat=position.latitude;
+                    });
+              }, child: Text("Use divice location")),
+
+            ],
+          ),
+
                 const SizedBox(
                   height: 5,
                 ),
@@ -238,7 +279,6 @@ class _AddproductpageState extends State<Addproductpage> {
       image1url = urlDownload1;
       image2url = urlDownload2;
     });
-
-    Database().WritePaperData(quantity, usedpersent, image1url, image2url);
+    Database().WritePaperData(quantity, usedpersent, image1url, image2url,data.lat,data.lon);
   }
 }

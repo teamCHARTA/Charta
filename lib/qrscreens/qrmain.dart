@@ -44,13 +44,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ));
               },
               child: const Text('Create QR')),
-          ElevatedButton(onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctxt)=>ScanScreen()
-                ));
-
-          }, 
-          child: const Text('Scan QR')),
+          // ElevatedButton(onPressed: () {
+          //   Navigator.of(context).push(MaterialPageRoute(
+          //         builder: (ctxt)=>ScanScreen()
+          //       ));
+          //
+          // },
+          //child: const Text('Scan QR')),
         ],
       )),
     );

@@ -1,3 +1,5 @@
+import 'package:charta/UIelements/about.dart';
+import 'package:charta/screens/Crudscreens/inhandpage.dart';
 import 'package:charta/screens/Rollspage/adminpage.dart';
 import 'package:charta/screens/Rollspage/scraperpage.dart';
 import 'package:charta/screens/Rollspage/sellerpage.dart';
@@ -5,10 +7,17 @@ import 'package:charta/screens/Rollspage/userpage.dart';
 import 'package:flutter/material.dart';
 import 'package:charta/functions/database.dart';
 import 'package:charta/functions/Signin.dart';
-import 'package:charta/functions/roles.dart';
+import 'package:charta/screens/Rollspage/roles.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../UIelements/Navigationprovidor.dart';
+import '../UIelements/functions.dart';
+import '../UIelements/headerfile,dart.dart';
+import '../UIelements/uielements.dart';
+import 'Crudscreens/Scraporderpaper.dart';
+import 'Crudscreens/userorders.dart';
 
 class Welcomepage extends StatefulWidget {
   const Welcomepage({Key? key}) : super(key: key);
@@ -31,18 +40,8 @@ class _WelcomepageState extends State<Welcomepage> {
 
   Widget build(BuildContext context) {
 
-    // if(rolestatus=="user"){
-    //   return Userpage();
-    // }
-    // else if(rolestatus=="seller"){
-    //   return Sellerpage();
-    // }
-    // else if(rolestatus=="scraper"){
-    //   return Scrapperpage();
-    // }else if(rolestatus=="admin"){
-    //   return Adminpage();
-    // }else{
       return Scaffold(
+        drawer: NavigationDrawerWidget(),
         body:StreamBuilder(
           stream: FirebaseFirestore.instance.collection("user").doc(uid).snapshots(),
           builder:(context,AsyncSnapshot<DocumentSnapshot>snapshot){
@@ -102,6 +101,19 @@ else{
 
 
   }
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
 
 

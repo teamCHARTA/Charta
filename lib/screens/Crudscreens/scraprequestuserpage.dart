@@ -1,46 +1,33 @@
-import 'package:charta/functions/Signin.dart';
-import 'package:charta/screens/Crudscreens/Scraporderpaper.dart';
-import 'package:charta/screens/Detailpage/Scraperpaperdetails.dart';
+import 'package:charta/UIelements/uielements.dart';
+import 'package:charta/functions/colorfunction.dart';
+import 'package:charta/screens/Crudscreens/scraprequestusserdetails.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:charta/functions/Signin.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 
-import '../../functions/colorfunction.dart';
 import '../../functions/database.dart';
 import '../Detailpage/Paperdetailspage.dart';
-
-class Scrapperpage extends StatefulWidget {
-  static const String routeName = '/scraperpage';
-  const Scrapperpage({Key? key}) : super(key: key);
+class ScraprequestAccpetuser extends StatefulWidget {
+  static const String routeName = '/Scraprequestuser';
+  const ScraprequestAccpetuser({Key? key}) : super(key: key);
 
   @override
-  _ScrapperpageState createState() => _ScrapperpageState();
+  _ScraprequestAccpetuserState createState() => _ScraprequestAccpetuserState();
 }
 
-class _ScrapperpageState extends State<Scrapperpage> {
+class _ScraprequestAccpetuserState extends State<ScraprequestAccpetuser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavigationDrawerWidget(),
       resizeToAvoidBottomInset:false,
-      appBar: AppBar(title: const Text("Home"),actions: [
+      appBar: AppBar(
+        elevation: 0.0,
+        title: Text("Scrap request"),
+      ),
 
-        TextButton(onPressed: (){
-        final provider = Provider.of<GoogleSigninProvider>(context,listen: false);
-        provider.logout();
-
-      }, child:Text("Logout",style: TextStyle(color: Colors.white),),),
-
-        TextButton(onPressed: (){
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ScraperOrder()));
-        }, child:Text("myorders",style: TextStyle(color: Colors.white),),),
-
-
-      ],),
-      body:Center(
+      body: Center(
         child: StreamBuilder<List<Product>>(
-            stream: Database().ReadScraperpaper(),
+            stream: Database().Readuserscrapacceptpaper(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
 
@@ -52,10 +39,13 @@ class _ScrapperpageState extends State<Scrapperpage> {
                   children: <Widget>[
                     Container(
                       height: 100,
-                      color: Colors.red,
+                      color: someColor().generateMaterialColor(Palette.primary),
                     ),
-                    const Text("Your Papers",
-                        style: TextStyle(fontSize: 40))
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text("Scrap request",
+                          style: TextStyle(fontSize: 25)),
+                    )
                   ] +
                       paper.map((buildPaper)).toList(),
                 );
@@ -63,9 +53,9 @@ class _ScrapperpageState extends State<Scrapperpage> {
                 return Center(child: CircularProgressIndicator());
               }
             }),
-      ),);
+      ),
+    );
   }
-
   Widget buildPaper(Product paper) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -88,21 +78,21 @@ class _ScrapperpageState extends State<Scrapperpage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Scraperpaperdetails(
+                    builder: (context) => ScraprequestUsserdetails(
                       url1: paper.url1,
                       url2: paper.url2,
                       productid: paper.productid,
                       quantity: paper.quantity,
                       uploadeddateandtime: paper.uploadeddateandtime,
                       uploaderid: paper.uploaderid,
-                      usedpersent: paper.usedpersent,lon: paper.lon,lat:paper.lat ,adress:paper.Adress ,
+                      usedpersent: paper.usedpersent,
+                      lat: paper.lat,
+                      lon: paper.lon,
+                      adress: paper.Adress,
                     )));
           },
         ),
       ),
     );
   }
-
-
-
 }

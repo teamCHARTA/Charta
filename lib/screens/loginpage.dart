@@ -35,9 +35,9 @@ class _logtosigninState extends State<logtosignin> {
                     child: const Text('Create QR')),
                 const SizedBox(height: 10,),
                 TextButton(onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context)=>ScanScreen()
-                  ));
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     // builder: (context)=>ScanScreen()
+                  // ));
 
                 },
                     child: const Text('Scan QR')),

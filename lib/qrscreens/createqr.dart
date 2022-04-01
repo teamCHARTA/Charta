@@ -12,35 +12,21 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  var qRstring='Be Happy:)';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create QR Code'),
-      ),
-      body: Center(
+    return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             BarcodeWidget(
-              color: Colors.black,
-              data: qRstring,
+              data: widget.uniqCode,
               height: 200,
               width: 250, 
             barcode: Barcode.qrCode()),
-            Container(
-              width: MediaQuery.of(context).size.width*.8,
-              child: ElevatedButton(onPressed: (){
-                setState(() {
-                  qRstring=widget.uniqCode;
-                });
-              }, child: const Text('Generate'))
-            )
           ],
-        ),
-      ),
-    );
+        )
+        );
+
   }
 }

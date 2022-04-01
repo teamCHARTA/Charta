@@ -42,6 +42,11 @@ class _GmapLocState extends State<GmapLoc> {
             initialCameraPosition: _initialCameraPosition,
             markers: Set.from(allMarkers),
             onMapCreated: mapCreated,
+              onTap: (LatLng pos) {
+            setState(() {
+              //assign pos value to your LatLng
+              print('${pos.latitude}, ${pos.longitude}');
+            });}
             ),
             Align(
           alignment: Alignment.bottomCenter,
