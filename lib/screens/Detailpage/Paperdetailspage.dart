@@ -1,4 +1,4 @@
-import 'package:charta/screens/Crudscreens/buyproductsnackbar.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
@@ -42,7 +42,7 @@ class _PaperdetailsState extends State<Paperdetails> {
         resizeToAvoidBottomInset:false,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('paper'),
+          title: Text('Buy ${widget.usedpersent}% used paper'),
         ),
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,31 +143,46 @@ class _PaperdetailsState extends State<Paperdetails> {
                     showAlertDialog(BuildContext context) {
                       // set up the buttons
                       Widget cancelButton = TextButton(
-                        child: Text("Cancel"),
+                        child: Text("Cancel",style: TextStyle(color: someColor().generateMaterialColor(Palette.secondary)),),
                         onPressed: () {
                           Navigator.pop(context);
                         },
                       );
-                      Widget continueButton = TextButton(
-                        child: Text("Continue"),
+                      Widget continueButton = ElevatedButton(
+                        child: Text("Buy"),
                         onPressed: () async {
-                          if (formkey.currentState!.validate() &&
-                                                  enteredquantity != null) {
-                                                Database().Buypaper(widget.productid,enteredquantity,widget.uploaderid);
-                                              } else {
-                                                print("error");
-                                                const message = 'Enter the every data';
-                                                const snackbar = const SnackBar(content: const Text(message));
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(snackbar);
-                                              }
+                          if(formkey.currentState==null){
 
+                          }
+                          else{
+                            if (formkey.currentState!.validate() &&
+                                enteredquantity != 0) {
+                              await Database().Buypaper(widget.productid,
+                                  enteredquantity, widget.uploaderid);
+                              Navigator.of(context).pop();
+                              const message = 'Brought Papers';
+                              const snackbar =
+                              const SnackBar(content: const Text(message));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackbar);
+
+                            } else {
+                              print("error");
+                              const message = 'Enter the every data';
+                              const snackbar =
+                                  const SnackBar(content: const Text(message));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackbar);
+                            }
+                          }
                         },
                       );
 
                       // set up the AlertDialog
                       AlertDialog alert = AlertDialog(
-                        title: Text("Enter Quantity"),
+                        
+                        backgroundColor: someColor().generateMaterialColor(Palette.container),
+                        title: Text("Enter Quantity",style: TextStyle(color: someColor().generateMaterialColor(Palette.secondary)),),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -180,15 +195,21 @@ class _PaperdetailsState extends State<Paperdetails> {
                                     decoration: InputDecoration(
                                         hintText: "Enter the quantity",
                                         labelText: "quantity",
+                                        fillColor:someColor().generateMaterialColor(Palette.secondary),
                                         border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(8.0))),
                                     validator: (text) {
-                                      if (int.parse(text!) == null ||
-                                          int.parse(text) == 0) {
-                                        return "please enter the Quantity";
+                                      print(text);
+                                      if (text == null ){
+                                        return "Enter some mount";
+                                      }else if(text.isEmpty){
+                                        return "Enter some mount";
                                       }
-                                      if (int.parse(text) > widget.quantity) {
+                                      else if(int.parse(text) == 0){
+                                        return "Enter some mount";
+                                      }
+                                      else if (int.parse(text) > widget.quantity) {
                                         return "Order out of stock";
                                       } else {
                                         enteredquantity = int.parse(text);

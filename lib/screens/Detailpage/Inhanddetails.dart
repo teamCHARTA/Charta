@@ -7,7 +7,7 @@ import '../../functions/database.dart';
 import '../../gmapservices/locationSelectMap.dart';
 import '../../gmapservices/locationservices.dart';
 import '../../main.dart';
-import '../../qrscreens/createqr.dart';
+
 class Inhanddetails extends StatefulWidget {
   final url1;
   final url2;
@@ -22,7 +22,6 @@ class Inhanddetails extends StatefulWidget {
   final lon;
   final adress;
 
-
   Inhanddetails({
     this.lon,
     this.lat,
@@ -35,22 +34,25 @@ class Inhanddetails extends StatefulWidget {
     this.uploaderid,
     this.usedpersent,
     this.sellerid,
-    this.parentproductid,}) ;
+    this.parentproductid,
+  });
 
   @override
   _InhanddetailsState createState() => _InhanddetailsState();
 }
-final data =Loc(lat: 0.00, lon: 0.00);
+
+final data = Loc(lat: 0.00, lon: 0.00);
+
 class _InhanddetailsState extends State<Inhanddetails> {
-  String msg="";
+  String msg = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('paper'),
+        title: Text('Details'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -86,7 +88,6 @@ class _InhanddetailsState extends State<Inhanddetails> {
                       SizedBox(
                         height: 10,
                       ),
-
                     ],
                   ),
                 ),
@@ -118,7 +119,7 @@ class _InhanddetailsState extends State<Inhanddetails> {
                                   )),
                               borderRadius: BorderRadius.circular(15)),
                           width: MediaQuery.of(context).size.width * 0.52,
-                          height:MediaQuery.of(context).size.width / 2.1,
+                          height: MediaQuery.of(context).size.width / 2.1,
                         ),
                         SizedBox(
                           width: 5,
@@ -142,135 +143,169 @@ class _InhanddetailsState extends State<Inhanddetails> {
               SizedBox(
                 height: 5,
               ),
-
-
-              Center(child: Enabledbutton(context, widget.usedpersent)),
-
+              Center(
+                  child: Enabledbutton(
+                context,
+              )),
             ]),
       ),
     );
   }
 
-  Widget Enabledbutton(BuildContext context,int usedpersent){
-    if(usedpersent==100){
+  Widget Enabledbutton(BuildContext context) {
+    if (widget.usedpersent == 100) {
       return Container(
           padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Text("Scraping Service Requested",style:TextStyle(fontSize: 20,color: Colors.grey),));
-
+          child: Text(
+            "Scraping Service Requested",
+            style: TextStyle(fontSize: 20, color: Colors.grey),
+          ));
     }
-    if(usedpersent<100){
-
-
+    if (widget.usedpersent < 100) {
       return Container(
         padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
         ),
-        child: ElevatedButton(onPressed: ()async{
+        child: ElevatedButton(
+            onPressed: () async {
+              showAlertDialog(BuildContext context) {
+                // set up the buttons
+                Widget cancelButton = TextButton(
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                        color: someColor()
+                            .generateMaterialColor(Palette.secondary)),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                );
+                Widget continueButton = ElevatedButton(
+                  child: Text("Request"),
+                  onPressed: () async {
+                    if (data.lon != 0.0 || data.lat != 0.0) {
+                      await Database().Scraprequestuser(
+                          widget.url1,
+                          widget.url2,
+                          widget.quantity,
+                          data.lat,
+                          data.lon,
+                          widget.productid);
+                      setState(() {
+                        widget.usedpersent = 100;
+                      });
+                      Navigator.of(context).pop;
+                    } else {
+                      Database().Snakebar(
+                          NavigationService.navigatorKey.currentContext,
+                          "Enter correct location");
+                    }
+                  },
+                );
 
-          showAlertDialog(BuildContext context) {
-
-            // set up the buttons
-            Widget cancelButton = TextButton(
-              child: Text("Cancel"),
-              onPressed:  () {
-                Navigator.pop(context);
-              },
-            );
-            Widget continueButton = TextButton(
-              child: Text("Continue"),
-              onPressed:  () async{
-                if(data.lon!=0.0 || data.lat!=0.0){
-                  await Database().Scraprequestuser(widget.url1, widget.url2, widget.quantity, data.lat, data.lon,widget.productid);
-                  setState(() {
-                    widget.usedpersent=100;
-                  });
-                }
-                else{
-                  Database().Snakebar(NavigationService.navigatorKey.currentContext,"Enter correct location");
-                }
-
-              },
-            );
-
-            // set up the AlertDialog
-            AlertDialog alert = AlertDialog(
-              title: Text("Note"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                 Text("Scrap request once made can't be changed.\nScraper will Contact you, for that please give your Information"),
-                  SizedBox(height: 10,),
-
-                  Column(
-
+                // set up the AlertDialog
+                AlertDialog alert = AlertDialog(
+                  backgroundColor:
+                      someColor().generateMaterialColor(Palette.container),
+                  title: Text(
+                    "Note",
+                    style: TextStyle(
+                        color: someColor()
+                            .generateMaterialColor(Palette.secondary)),
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
+                      Text(
+                        "Scrap request once made can't be changed.\nScraper will Contact you, for that please give your Information",
+                        style: TextStyle(
+                            color: someColor()
+                                .generateMaterialColor(Palette.secondary)),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Column(
                         children: [
-                          TextButton(onPressed:()async{
-                            final location = await Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context)=> LocMapSel()//calling with uniqueCode
-                            )) as Loc;
-                            setState(() {
-                              data.lon=location.lon;
-                              data.lat=location.lat;
-                            });
-
-
-                          }, child: Text("Select location from Map")),
-                          Text("OR"),
-                          SizedBox(width: 10,),
-                          TextButton(onPressed:()async{
-                            final Position position = await Getlocation().getGeoLocationPosition();
-                            setState(() {
-                              data.lon=position.longitude;
-                              data.lat=position.latitude;
-                            });
-                          }, child: Text("Use divice location")),
-                          SizedBox(width: 10,),
-                           Text(msg,style: TextStyle(color: Colors.red),),
+                          Column(
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    final location = await Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                LocMapSel() //calling with uniqueCode
+                                            )) as Loc;
+                                    setState(() {
+                                      data.lon = location.lon;
+                                      data.lat = location.lat;
+                                    });
+                                  },
+                                  child: Text("Select location from Map")),
+                              Text(
+                                "OR",
+                                style: TextStyle(
+                                    color: someColor().generateMaterialColor(
+                                        Palette.secondary)),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    final Position position =
+                                        await Getlocation()
+                                            .getGeoLocationPosition();
+                                    setState(() {
+                                      data.lon = position.longitude;
+                                      data.lat = position.latitude;
+                                    });
+                                  },
+                                  child: Text("Use divice location")),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                msg,
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
-
                     ],
-                  ),],
-              ),
-              actions: [
-                cancelButton,
-                continueButton,
-              ],
-            );
+                  ),
+                  actions: [
+                    cancelButton,
+                    continueButton,
+                  ],
+                );
 
-            // show the dialog
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return alert;
-              },
-            );
-          }
-          showAlertDialog(context);
+                // show the dialog
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return alert;
+                  },
+                );
+              }
 
-
-
-
-
-
-        }, child: Text("Request Scrap",style: TextStyle(fontSize: 20,color: Colors.red),)),
+              showAlertDialog(context);
+            },
+            child: Text(
+              "Request Scrap",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: someColor().generateMaterialColor(Palette.secondary)),
+            )),
       );
-    }
-    else{
+    } else {
       return Text("Something went Wrong");
     }
-
-
-
   }
-
-
-
-
 }

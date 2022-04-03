@@ -1,17 +1,12 @@
 import 'dart:io';
-
 import 'dart:typed_data';
-
 import 'package:charta/functions/Signin.dart';
 import 'package:charta/gmapservices/locationservices.dart';
 import 'package:charta/screens/Rollspage/roles.dart';
-import 'package:charta/screens/Crudscreens/Addproduct.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
-
 import '../main.dart';
 import '../screens/Detailpage/Scraperorderpaperdetails.dart';
 import '../screens/Detailpage/sellerorderpaperdetails.dart';
@@ -504,7 +499,7 @@ class Database{
 
 
 
-    }).then((value) => Snakebar(NavigationService.navigatorKey.currentContext,"added buyedproduct"));
+    });
 
 
     await FirebaseFirestore.instance.collection("user").doc(sellerid).collection("orderedproduct").doc(buyedid).set({
@@ -519,13 +514,13 @@ class Database{
       "usedpersent":paper.usedpersent,
       "buyerid":uid,
       "Buyedtime":DateTime.now(),
-    }).then((value) => Snakebar(NavigationService.navigatorKey.currentContext,"added orderedproduct"));
+    });
 
 
     await FirebaseFirestore.instance.collection("paperdata").doc(id).update({
       "quantity":prevquantity-quantity,
 
-    }).then((value) => Snakebar(NavigationService.navigatorKey.currentContext,"updated paperdata"));
+    });
 
 }
   }
@@ -572,8 +567,8 @@ class Database{
     String Adress=await Getlocation().GetAddressFromLatLong(latitude, longitude);
     var uid=FirebaseAuth.instance.currentUser?.uid;
 
-    await FirebaseFirestore.instance.collection("paperdata").doc(id).set({
-      "productid": id,
+    await FirebaseFirestore.instance.collection("paperdata").doc(proid).set({
+      "productid": proid,
       "uploaderid":uid,
       "url1":url1,
       "url2":url2,
@@ -677,14 +672,14 @@ class Database{
 
 
   Stream <List<Product>> ReadUserpaper() {
-    return FirebaseFirestore.instance.collection('paperdata').where("usedpersent",isNotEqualTo: 100).orderBy("usedpersent",descending: true).orderBy("uploadeddateandtime",descending: true).
+    return FirebaseFirestore.instance.collection('paperdata').where("usedpersent",isNotEqualTo: 100).orderBy("usedpersent").
     snapshots()
         .map((snapshots) =>snapshots.docs.map((doc) =>Product.fromJson(doc.data())).toList());
   }
 
 
   Stream <List<Product>> ReadScraperpaper() {
-    return FirebaseFirestore.instance.collection('paperdata').where("usedpersent",isEqualTo: 100).orderBy("uploadeddateandtime",descending: true).
+    return FirebaseFirestore.instance.collection('paperdata').where("usedpersent",isEqualTo: 100).orderBy("quantity",descending: true).
     snapshots()
         .map((snapshots) =>snapshots.docs.map((doc) =>Product.fromJson(doc.data())).toList());
   }

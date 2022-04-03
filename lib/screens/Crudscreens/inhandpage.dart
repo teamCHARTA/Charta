@@ -1,13 +1,14 @@
 import 'package:charta/screens/Detailpage/Inhanddetails.dart';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+
 
 import '../../UIelements/uielements.dart';
-import '../../functions/Signin.dart';
+
 import '../../functions/colorfunction.dart';
 import '../../functions/database.dart';
-import '../Detailpage/usserorderpapaperdetails.dart';
+
 
 class Inhand extends StatefulWidget {
   static const String routeName = '/inhand';
@@ -24,38 +25,42 @@ class _InhandState extends State<Inhand> {
       resizeToAvoidBottomInset:false,
       appBar: AppBar(
         elevation: 0.0,
-        title: const Text("Inhand"),
+        title: const Text("In Hand"),
       ),
       drawer: NavigationDrawerWidget(),
-      body: Center(
-        child: StreamBuilder<List<userOrder>>(
-            stream: Database().ReadInhandpaper(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                final message = 'Enter the every data';
-                final snackbar = SnackBar(content: Text(message));
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                return Text('Something went Wrong');
-              } else if (snapshot.hasData) {
-                final paper = snapshot.data!;
-                return ListView(
-                  children: <Widget>[
-                    Container(
-                      height: 100,
-                      color: someColor().generateMaterialColor(Palette.primary),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text("Papers in Your hand",
-                          style: TextStyle(fontSize: 25)),
-                    )
-                  ] +
-                      paper.map((buildPaper)).toList(),
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            }),
+      body:
+      DoubleBackToCloseApp(
+        child:
+        Center(
+          child: StreamBuilder<List<userOrder>>(
+              stream: Database().ReadInhandpaper(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  final message = 'Enter the every data';
+                  final snackbar = SnackBar(content: Text(message));
+                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  return Text('Something went Wrong');
+                } else if (snapshot.hasData) {
+                  final paper = snapshot.data!;
+                  return ListView(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Papers in Your hand",
+                            style: TextStyle(fontSize: 20,fontStyle:FontStyle.italic,color: someColor().generateMaterialColor(Palette.container))),
+                      )
+                    ] +
+                        paper.map((buildPaper)).toList(),
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              }),
+        ),
+        snackBar: const SnackBar(
+          content: Text('Tap back again to leave'),
+       ),
+
       ),
     );
   }
@@ -73,13 +78,24 @@ class _InhandState extends State<Inhand> {
       ),
       child: ListTile(
         tileColor: Color.fromRGBO(168, 255, 243, 0),
-        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         leading: CircleAvatar(
-          child: Text('${paper.usedpersent}%'),
+          radius: 40,
+          child: Text(
+            '${paper.quantity}kg',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
-        title: Text('${paper.usedpersent}% used'),
+        title: Text('${paper.quantity}kg in Hand',
+            style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color:
+                someColor().generateMaterialColor(Palette.secondary))),
         subtitle: Text(
-            '${paper.usedpersent}% used ${paper.quantity} kg Available\n${Database().timeAgo(paper.Buyedtime.toDate())}'),
+          '${paper.usedpersent}% Used Paper\n${Database().timeAgo(paper.Buyedtime.toDate())}',
+          style: TextStyle(fontSize: 15),
+        ),
         onTap: () {
           Navigator.push(
               context,
