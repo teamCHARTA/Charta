@@ -1,4 +1,4 @@
-Charta is a online platform which deals with used paper
+Charta is an online platform which deals with used paper
 This application is build with Flutter and Firebase
 For knowing more Watch:https://youtu.be/N5GJUNOmd6Y
 developed by:Team Charta
