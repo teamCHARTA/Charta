@@ -8,6 +8,8 @@ developed by:Team Charta
 after on terminal at root of the repository type"flutter build apk"<br>
 this will build an apk file.<br>
 Install this apk in your Android device (not IOS).<br>
+If some error occurs <br>
+goto-/android/lib/apk/Charta.apk<br>
 
 
 how this app work:https://youtu.be/N5GJUNOmd6Y<br>
@@ -16,13 +18,13 @@ how this app work:https://youtu.be/N5GJUNOmd6Y<br>
 2.select your roll(user,seller,scrapercollector)<br>
 <br>
 //////////////////<br>
-3.In User roll you can only buy papers from a list<br>
-4.After buying a paper user have to visit seller at the location provided.<br>
-5.Seller will scan the QR code from you<br>
-6.After User writes the paper to 100% he can forward this paper to Scrapcollector at in hand page.<br>
-7.Scrap collector will request User paper if he has an intrest<br>
-8.Scrapcollector will visit user at given location.<br>
-9.Scrapcollector will scan the Qr code and take the paper<br>
+1.In User roll you can only buy papers from a list<br>
+2.After buying a paper user have to visit seller at the location provided.<br>
+3.Seller will scan the QR code from you<br>
+4.After User writes the paper to 100% he can forward this paper to Scrapcollector at in hand page.<br>
+5.Scrap collector will request User paper if he has an intrest<br>
+6.Scrapcollector will visit user at given location.<br>
+7.Scrapcollector will scan the Qr code and take the paper<br>
 /////////////////<br>
 <br>
 ////////////////<br>
