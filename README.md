@@ -1,16 +1,13 @@
-# charta
+Charta is a online platform which deals with used paper
+This application is build with Flutter and Firebase
+For knowing more Watch:https://youtu.be/N5GJUNOmd6Y
+developed by:Team Charta
 
-A new Flutter project.
 
-## Getting Started
+For running this application first copy this code in your Editor
+after on terminal at root of the repository type"flutter build apk"
+this will build an apk file.
+Install this apk in your Android device (not IOS).
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+how this app work:https://youtu.be/N5GJUNOmd6Y
