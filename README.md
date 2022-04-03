@@ -10,6 +10,7 @@ this will build an apk file.<br>
 Install this apk in your Android device (not IOS).<br>
 If some error occurs <br>
 goto-/android/lib/apk/Charta.apk<br>
+install this apk<br>
 
 
 how this app work:https://youtu.be/N5GJUNOmd6Y<br>
