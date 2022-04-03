@@ -9,7 +9,7 @@ after on terminal at root of the repository type"flutter build apk"<br>
 this will build an apk file.<br>
 Install this apk in your Android device (not IOS).<br>
 If some error occurs <br>
-goto-/android/lib/apk/Charta.apk<br>
+goto-lib/apk/Charta.apk<br>
 install this apk<br>
 
 
