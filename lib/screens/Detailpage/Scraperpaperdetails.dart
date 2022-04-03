@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../functions/colorfunction.dart';
 import '../../functions/database.dart';
-import '../../main.dart';
+
 class Scraperpaperdetails extends StatefulWidget {
   final url1;
   final url2;
@@ -30,8 +31,7 @@ class Scraperpaperdetails extends StatefulWidget {
     this.usedpersent,
     this.sellerid,
     this.parentproductid,
-
-});
+  });
 
   @override
   _ScraperpaperdetailsState createState() => _ScraperpaperdetailsState();
@@ -41,20 +41,23 @@ class _ScraperpaperdetailsState extends State<Scraperpaperdetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('paper'),
+        title: Text('Details'),
       ),
       body: SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
+                  color: someColor().generateMaterialColor(Palette.container),
+                  borderRadius: BorderRadius.circular(10),
                 ),
+                padding: EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -64,25 +67,26 @@ class _ScraperpaperdetailsState extends State<Scraperpaperdetails> {
                         height: 10,
                       ),
                       Text(
-                        "${widget.usedpersent} % Used papers.  ",
-                        style: TextStyle(fontSize: 30),
+                        "Quantity: ${widget.quantity} kg",
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: someColor()
+                                .generateMaterialColor(Palette.secondary)),
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        "${widget.quantity} kg available. ",
-                        style: TextStyle(fontSize: 30),
+                        "Used persentage: ${widget.usedpersent} %",
+                        style: TextStyle(fontSize: 18),
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        "Added on \n${widget.uploadeddateandtime.toDate()}",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      SizedBox(
-                        height: 10,
+                        "Location: ${widget.adress}",
+                        style: TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
@@ -91,48 +95,86 @@ class _ScraperpaperdetailsState extends State<Scraperpaperdetails> {
               SizedBox(
                 height: 5,
               ),
-              Row(
-                children: [
-                  Container(
-                    width: (MediaQuery.of(context).size.width / 2) - 5,
-                    child: Image(
-                        fit: BoxFit.fitWidth, image: NetworkImage(widget.url1)),
-                    // decoration: BoxDecoration(
-                    //     image: DecorationImage(
-                    //         fit: BoxFit.fitWidth,
-                    //         image: NetworkImage(widget.url1)),
-                    //     borderRadius: BorderRadius.circular(15)),
+              Container(
+                margin: EdgeInsets.all(10),
+                //padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: someColor().generateMaterialColor(Palette.container),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(
+                                    widget.url1,
+                                  )),
+                              borderRadius: BorderRadius.circular(15)),
+                          width: MediaQuery.of(context).size.width * 0.52,
+                          height: MediaQuery.of(context).size.width / 2.1,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(widget.url2)),
+                              borderRadius: BorderRadius.circular(15)),
+                          width: MediaQuery.of(context).size.width / 2.1,
+                          height: MediaQuery.of(context).size.width / 2.1,
+                        ),
+                      ],
+                    ),
                   ),
-                  Container(
-                    width: (MediaQuery.of(context).size.width / 2) - 5,
-                    child: Image(
-                        fit: BoxFit.fitWidth, image: NetworkImage(widget.url2)),
-                  ),
-                ],
+                ),
               ),
               SizedBox(
                 height: 5,
               ),
-
-
-
-              TextButton(
-                onPressed: () {
-
-                  Database().Scraprequestscraper(widget.url1, widget.url2, widget.quantity, widget.lat, widget.lon, widget.productid, widget.uploaderid).then((value) => Navigator.pop(context));
-                  
-                },
-                child: const Center(
-                    child: Text(
-                      "Accept order",
-                      style: TextStyle(fontSize: 20,color: Colors.red),
-                    )),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Database()
+                        .Scraprequestscraper(
+                            widget.url1,
+                            widget.url2,
+                            widget.quantity,
+                            widget.lat,
+                            widget.lon,
+                            widget.productid,
+                            widget.uploaderid)
+                        .then((value) => Navigator.pop(context));
+                  },
+                  child: Center(
+                      child: Text(
+                    "Accept order",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: someColor()
+                            .generateMaterialColor(Palette.secondary)),
+                  )),
+                ),
               ),
             ]),
       ),
     );
   }
-
 
   // Widget Enabledbutton(BuildContext context,int usedpersent){
   //
@@ -197,9 +239,5 @@ class _ScraperpaperdetailsState extends State<Scraperpaperdetails> {
   //
   //
   // }
-
-
-
-
 
 }

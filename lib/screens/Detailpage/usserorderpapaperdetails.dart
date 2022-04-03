@@ -1,19 +1,14 @@
 import 'package:charta/gmapservices/locationservices.dart';
-import 'package:charta/screens/Crudscreens/buyproductsnackbar.dart';
-import 'package:charta/screens/Rollspage/roles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../functions/colorfunction.dart';
 import '../../functions/database.dart';
 import '../../qrscreens/createqr.dart';
 
 class UsserorderPaperdetails extends StatefulWidget {
-
   final url1;
   final url2;
   final productid;
@@ -27,7 +22,6 @@ class UsserorderPaperdetails extends StatefulWidget {
   final lon;
   final adress;
   UsserorderPaperdetails({
-
     this.lon,
     this.lat,
     this.adress,
@@ -53,10 +47,10 @@ class _UsserorderPaperdetailsState extends State<UsserorderPaperdetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('paper'),
+        title: Text("Details"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -64,13 +58,25 @@ class _UsserorderPaperdetailsState extends State<UsserorderPaperdetails> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.symmetric(vertical: 20),
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.fromLTRB(10, 10, 10, 5),
                 decoration: BoxDecoration(
                   color: someColor().generateMaterialColor(Palette.container),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: CreateScreen(
-                  uniqCode: widget.productid,
+                child: Column(
+                  children: [
+                    CreateScreen(
+                      uniqCode: widget.productid,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                          "Seller has to scan this Before handovering Papers, because this QR has the Unique code"),
+                    )
+                  ],
                 ),
               ),
               Container(
@@ -110,10 +116,12 @@ class _UsserorderPaperdetailsState extends State<UsserorderPaperdetails> {
                       SizedBox(
                         height: 10,
                       ),
-                      ElevatedButton.icon(onPressed: ()async {
-                        Getlocation().launchURL(widget.lat, widget.lon);
-
-                      }, icon:FaIcon(FontAwesomeIcons.map), label: Text("Get location on google map"),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          Getlocation().launchURL(widget.lat, widget.lon);
+                        },
+                        icon: FaIcon(FontAwesomeIcons.map),
+                        label: Text("Get location on google map"),
                       ),
                     ],
                   ),
@@ -170,25 +178,27 @@ class _UsserorderPaperdetailsState extends State<UsserorderPaperdetails> {
               SizedBox(
                 height: 5,
               ),
-              
-
-             Container(
-               padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-               decoration: BoxDecoration(
-                 borderRadius: BorderRadius.circular(15),
-               ),
-               child: ElevatedButton(
-                  onPressed: () {
-                    Database().CancelUserorder(widget.productid, widget.sellerid,widget.parentproductid,widget.quantity);
-
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await Database().CancelUserorder(
+                        widget.productid,
+                        widget.sellerid,
+                        widget.parentproductid,
+                        widget.quantity);
+                    Navigator.of(context).pop();
                   },
                   child: const Center(
                       child: Text(
                     "Canel order",
-                    style: TextStyle(fontSize: 20,color: Colors.red),
+                    style: TextStyle(fontSize: 20, color: Colors.red),
                   )),
                 ),
-             ),
+              ),
             ]),
       ),
     );
